@@ -46,17 +46,23 @@ distribute_file build/krb5.conf /etc/krb5.conf
 
 MESOS_SITE_PATH=hdfs-mesos-0.1.8/etc/hadoop/hdfs-site.xml
 HDFS_URL=$(curl -f https://raw.githubusercontent.com/mesosphere/universe/version-2.x/repo/packages/H/hdfs/1/resource.json | jq -r '.assets.uris."hdfs-mesos-0-1-8-tgz"')
-curl -f "${HDFS_URL}" | gunzip | tar -C build -xf - ${MESOS_SITE_PATH}
+curl -f "${HDFS_URL}" | tar -xvz -C build/ -f -
 (
 	grep -v "</configuration>" build/${MESOS_SITE_PATH}
 	cat kerberos-site.xml
 	echo "</configuration>"
 ) > build/hdfs-site.xml
+cp build/hdfs-site.xml build/${MESOS_SITE_PATH}
+
+cd build
+tar -czf hdfs-mesos.tgz hdfs-mesos-0.1.8
+s3cmd put -P --multipart-chunk-size-mb=5 --continue-put hdfs-mesos.tgz s3://spark-ssl/
+cd -
 
 cat >build/options.json <<EOF
 {
 	"hdfs": {
-		"custom-hdfs-config": "$(cat build/hdfs-site.xml | base64)"
+		"custom-mesos-hdfs-tgz": "http://spark-ssl.s3.amazonaws.com/hdfs-mesos.tgz"
 	}
 }
 EOF
