@@ -3,7 +3,7 @@
 sed -e "s=HOST_NAME=$(hostname -s)=g" \
 	-e "s=DOMAIN_NAME=${DOMAIN_NAME}=g" \
 	-e "s=REALM_NAME=${REALM_NAME}=g" \
-	-i /etc/krb5.conf
+	/etc/krb5.conf.template > /etc/krb5.conf
 
 sed -e "s/^kdc *=.*/kdc = STDERR/" -i /etc/heimdal-kdc/kdc.conf
 
@@ -24,7 +24,7 @@ echo =======
 env | egrep "^KEYTAB_" | cut -d= -f2- | while IFS=: read -r PRINCIPAL KEYTAB; do
 	KEYTAB="${KEYTAB:-foo}"
 	kadmin -l ext_keytab -k "/export/${KEYTAB}" "${PRINCIPAL}"
-	echo "${PRINCIPAL} @ ${KEYTAB}: $(base64 -w 0 "/export/${KEYTAB}")"
+	echo "${KEYTAB}: $(base64 -w 0 "/export/${KEYTAB}")"
 done
 
 echo

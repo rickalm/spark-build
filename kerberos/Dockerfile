@@ -9,7 +9,7 @@ RUN apt-get -y install libsasl2-modules-gssapi-heimdal
 
 EXPOSE	88
 
-ADD krb5.conf /etc/krb5.conf
+ADD krb5.conf.template /etc/krb5.conf.template
 ADD run.sh /run.sh
 
 RUN mkdir /export
