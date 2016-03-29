@@ -27,6 +27,8 @@ env | egrep "^KEYTAB_" | cut -d= -f2- | while IFS=: read -r PRINCIPAL KEYTAB; do
 	echo "${KEYTAB}: $(base64 -w 0 "/export/${KEYTAB}")"
 done
 
+nohup python -m SimpleHTTPServer 8000
+
 echo
 echo KDC LOGS
 echo ========

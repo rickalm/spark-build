@@ -12,12 +12,13 @@
 	"container": {
 		"type": "DOCKER",
 		"docker": {
-			"image": "mesosphere/test-kdc:latest",
+			"image": "mesosphere/kdc:latest",
 			"network": "BRIDGE",
 			"forcePullImage": true,
 			"parameters": [
 				{"key":"publish", "value": "88:88/udp"},
-				{"key":"publish", "value": "88:88/tcp"}
+				{"key":"publish", "value": "88:88/tcp"},
+				{"key":"publish", "value": "8000:8000/tcp"}				
 			]
 		}
 	}

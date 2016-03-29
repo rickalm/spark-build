@@ -4,6 +4,7 @@ MAINTAINER Dr. Stefan Schimanski <sttts@mesosphere.io>
 RUN apt-get -y update
 
 RUN echo package heimdal/realm string REALM | debconf-set-selections
+RUN apt-get -y install python
 RUN apt-get -y install heimdal-kdc
 RUN apt-get -y install libsasl2-modules-gssapi-heimdal
 
