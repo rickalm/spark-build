@@ -18,16 +18,28 @@
 # docker build -t spark:git-`git rev-parse --short HEAD` .
 
 # Basing from Mesos image so the Mesos native library is present.
-FROM mesosphere/mesos:0.25.0-0.2.70.ubuntu1404
+FROM mesosphere/mesos:1.0.0-1.0.52.rc1.ubuntu1404
 MAINTAINER Michael Gummelt <mgummelt@mesosphere.io>
 
 # Set environment variables.
 ENV DEBIAN_FRONTEND "noninteractive"
 ENV DEBCONF_NONINTERACTIVE_SEEN "true"
 
+# RUN echo "deb http://archive.ubuntu.com/ubuntu/ xenial main universe" >> /etc/apt/sources.list
+
 # Upgrade package index and install basic commands.
 RUN apt-get update && \
-    apt-get install -y software-properties-common runit nginx
+    apt-get install -y \
+            software-properties-common \
+            runit \
+            nginx \
+            libevent-2.0-5 \
+            libevent-pthreads-2.0-5 \
+            libevent-openssl-2.0-5
+
+# RUN apt-get install -y systemd-coredump
+# RUN ln -s /lib/systemd/systemd-coredump /usr/lib/systemd/systemd-coredump
+
 RUN add-apt-repository ppa:openjdk-r/ppa
 RUN apt-get update && \
     apt-get install -y openjdk-8-jdk curl
@@ -57,4 +69,3 @@ RUN ln -s /var/lib/runit/service/spark /etc/service/spark
 RUN ln -s /var/lib/runit/service/nginx /etc/service/nginx
 
 WORKDIR /opt/spark/dist
-

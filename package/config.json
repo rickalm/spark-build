@@ -22,6 +22,11 @@
                     "minimum": 1024.0,
                     "type": "number"
                 },
+                "volumes": {
+                    "default": [],
+                    "description": "volumes",
+                    "type": "list"
+                }
                 "role": {
                     "description": "The Spark Dispatcher will register with Mesos with this role.",
                     "type": "string",

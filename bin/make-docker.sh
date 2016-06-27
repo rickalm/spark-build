@@ -26,7 +26,7 @@ function create_docker_context {
 
 function build_docker {
     # build docker
-    (cd build/docker && docker build --no-cache -t "${DOCKER_IMAGE}" .)
+    (cd build/docker && docker build -t "${DOCKER_IMAGE}" .)
 }
 
 function push_docker {

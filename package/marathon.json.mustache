@@ -43,6 +43,7 @@
             "image": "{{resource.assets.container.docker.spark_docker}}",
             "network": "HOST",
             "forcePullImage": true
+            "volumes": {{service.volumes}}
         }
     },
     "healthChecks": [

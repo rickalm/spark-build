@@ -13,6 +13,26 @@ mkdir -p "${HADOOP_CONF_DIR}"
 
 MESOS_NATIVE_JAVA_LIBRARY=/usr/local/lib/libmesos.so
 
+# Mesos SSL
+#
+# TODO(mgummelt): these values should be set dynamically either at job submission time or DC/OS package install time, but we lack both:
+#   a) a method of setting env vars on drivers
+#   b) a method of allowing users to configure the DC/OS Spark docker image (and therefore this file)
+if [ -d /run/dcos/pki ]; then
+    SSL_ENABLED=true
+    SSL_CERT_FILE=/run/dcos/pki/tls/certs/scheduler.crt
+    SSL_KEY_FILE=/run/dcos/pki/tls/private/scheduler.key
+    SSL_CA_DIR=/run/dcos/pki/CA/certs
+fi
+
+# Mesos Auth
+#
+# See "Mesos SSL" Section
+if [ -d /opt/mesosphere ]; then
+    MESOS_MODULES=file:///opt/mesosphere/etc/mesos-scheduler-modules/dcos_authenticatee_module.json
+    MESOS_AUTHENTICATEE=com_mesosphere_dcos_ClassicRPCAuthenticatee
+fi
+
 # Options read when launching programs locally with
 # ./bin/run-example or ./bin/spark-submit
 # - HADOOP_CONF_DIR, to point Spark towards Hadoop configuration files
