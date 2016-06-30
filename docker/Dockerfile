@@ -68,4 +68,11 @@ RUN ln -s /bin/grep /usr/bin/grep
 RUN ln -s /var/lib/runit/service/spark /etc/service/spark
 RUN ln -s /var/lib/runit/service/nginx /etc/service/nginx
 
+RUN chmod -R ugo+w /etc/nginx
+RUN chmod -R ugo+wx /etc/service
+RUN chmod -R ugo+wx /var/lib/
+RUN chmod -R ugo+wx /var/run/
+RUN chmod -R ugo+wx /var/log/
+RUN chmod -R ugo+wx /opt/spark/dist
+
 WORKDIR /opt/spark/dist
