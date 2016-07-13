@@ -1,5 +1,5 @@
 {
     "python_package": "https://s3-us-west-2.amazonaws.com/mesosphere-spark/dcos_spark-0.5.17-py2.py3-none-any.whl",
-    "spark_uri": "file:///home/mgummelt/code/spark/spark-1.6.1-bin-2.4.0.tgz",
+    "spark_uri": "https://mgummelt-mesos.s3.amazonaws.com/spark-1.6.1-sec18.tgz",
     "version": "1.0.0-1.6.1-sec18"
 }
