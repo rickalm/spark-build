@@ -13,6 +13,9 @@ mkdir -p "${HADOOP_CONF_DIR}"
 
 MESOS_NATIVE_JAVA_LIBRARY=/usr/local/lib/libmesos.so
 
+# Workaround for MESOS-5866
+MESOS_DIRECTORY=${MESOS_SANDBOX}
+
 # Mesos SSL
 #
 # TODO(mgummelt): these values should be set dynamically either at job submission time or DC/OS package install time, but we lack both:
