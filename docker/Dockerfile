@@ -57,6 +57,8 @@ ADD runit/service /var/lib/runit/service
 ADD runit/init.sh /sbin/init.sh
 ADD nginx /etc/nginx
 
+
+
 #RUN ln -sf /usr/lib/libmesos.so /usr/lib/libmesos-0.23.1.so
 
 # The following symlinks are hacks to make spark-class work under the
@@ -69,11 +71,11 @@ RUN ln -s /bin/grep /usr/bin/grep
 RUN ln -s /var/lib/runit/service/spark /etc/service/spark
 RUN ln -s /var/lib/runit/service/nginx /etc/service/nginx
 
-RUN chmod -R ugo+w /etc/nginx
-RUN chmod -R ugo+wx /etc/service
-RUN chmod -R ugo+wx /var/lib/
-RUN chmod -R ugo+wx /var/run/
-RUN chmod -R ugo+wx /var/log/
-RUN chmod -R ugo+wx /opt/spark/dist
+RUN chmod -R ugo+rw /etc/nginx
+RUN chmod -R ugo+rw /etc/service
+RUN chmod -R ugo+rw /var/lib/
+RUN chmod -R ugo+rw /var/run/
+RUN chmod -R ugo+rw /var/log/
+RUN chmod -R ugo+rw /opt/spark/dist
 
 WORKDIR /opt/spark/dist

@@ -22,11 +22,6 @@
                     "minimum": 1024.0,
                     "type": "number"
                 },
-                "volumes": {
-                    "default": [],
-                    "description": "volumes",
-                    "type": "list"
-                }
                 "role": {
                     "description": "The Spark Dispatcher will register with Mesos with this role.",
                     "type": "string",
@@ -126,6 +121,7 @@
                             "properties": {
                                 "enabled": {
                                     "type": "boolean",
+                                    "description": "Set to true to enable SSL on Mesos communication",
                                     "default": false
                                 }
                             }
@@ -135,7 +131,7 @@
                             "type": "object",
                             "properties": {
                                 "secret_name": {
-                                    "description": "Path to a service-account credential in the secret store. Only needed when DC/OS service authentication is enabled.",
+                                    "description": "Name of the secret used to authenticate with the Mesos Master.",
                                     "type": "string"
                                 }
                             }
