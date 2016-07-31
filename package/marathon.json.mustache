@@ -32,7 +32,7 @@
         "HISTORY_KRB_KEYTAB": "{{history-server.kerberos.keytab}}",
 {{#security.mesos.authentication.secret_name}}
         "DCOS_SERVICE_ACCOUNT_CREDENTIAL": { "secret": "serviceCredential" },
-        "MESOS_MODULES": "file:///opt/mesosphere/etc/mesos-scheduler-modules/dcos_authenticatee_module.json",
+        "MESOS_MODULES": "file:///opt/mesosphere/mesos-modules-private/build/dcos_classic_rpc_authn/authenticatee_modules.json",
         "MESOS_AUTHENTICATEE": "com_mesosphere_dcos_ClassicRPCAuthenticatee",
 {{/security.mesos.authentication.secret_name}}
 {{#security.mesos.ssl.enabled}}

@@ -18,7 +18,6 @@
 # docker build -t spark:git-`git rev-parse --short HEAD` .
 
 # Basing from Mesos image so the Mesos native library is present.
-
 FROM mesosphere/mesos-modules-private:git-e348e3f
 MAINTAINER Michael Gummelt <mgummelt@mesosphere.io>
 
@@ -26,20 +25,17 @@ MAINTAINER Michael Gummelt <mgummelt@mesosphere.io>
 ENV DEBIAN_FRONTEND "noninteractive"
 ENV DEBCONF_NONINTERACTIVE_SEEN "true"
 
-# RUN echo "deb http://archive.ubuntu.com/ubuntu/ xenial main universe" >> /etc/apt/sources.list
-
 # Upgrade package index and install basic commands.
 RUN apt-get update && \
     apt-get install -y \
             software-properties-common \
             runit \
-            nginx \
-            libevent-2.0-5 \
-            libevent-pthreads-2.0-5 \
-            libevent-openssl-2.0-5
+            nginx
 
-# RUN apt-get install -y systemd-coredump
-# RUN ln -s /lib/systemd/systemd-coredump /usr/lib/systemd/systemd-coredump
+
+# libevent-2.0-5 \
+# libevent-pthreads-2.0-5 \
+# libevent-openssl-2.0-5
 
 RUN add-apt-repository ppa:openjdk-r/ppa
 RUN apt-get update && \
@@ -56,10 +52,6 @@ ADD hadoop/* /etc/hadoop/
 ADD runit/service /var/lib/runit/service
 ADD runit/init.sh /sbin/init.sh
 ADD nginx /etc/nginx
-
-
-
-#RUN ln -sf /usr/lib/libmesos.so /usr/lib/libmesos-0.23.1.so
 
 # The following symlinks are hacks to make spark-class work under the
 # restricted PATH (/usr/bin) set by the DCOS
