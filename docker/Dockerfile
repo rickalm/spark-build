@@ -53,6 +53,9 @@ ADD runit/service /var/lib/runit/service
 ADD runit/init.sh /sbin/init.sh
 ADD nginx /etc/nginx
 
+# Add security modules json.
+ADD dcos_authenticatee_module.json /etc/mesosphere/dcos_authenticatee_module.json
+
 # The following symlinks are hacks to make spark-class work under the
 # restricted PATH (/usr/bin) set by the DCOS
 # --executor-environment-variables option
