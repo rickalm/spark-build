@@ -1,0 +1,6 @@
+{
+    "cli_version": "0.5.19",
+    "spark_uri": "https://s3.amazonaws.com/uptake-dcos-assets/spark-1.6.2-bin-hadoop-2.7.2_scala-2.10.tgz",
+    "docker_image": "uptake/dcos-spark:${VERSION:-SNAPSHOT}-1.6.2-2.7.2-2.10",
+    "version": "${VERSION:-SNAPSHOT}"
+}

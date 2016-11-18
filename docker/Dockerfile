@@ -18,25 +18,37 @@
 # docker build -t spark:git-`git rev-parse --short HEAD` .
 
 # Basing from Mesos image so the Mesos native library is present.
-FROM mesosphere/mesos-modules-private:git-e348e3f
+#FROM mesosphere/mesos-modules-private:git-e348e3f
+FROM mesosphere/mesos:0.25.0-0.2.70.ubuntu1404
 MAINTAINER Michael Gummelt <mgummelt@mesosphere.io>
 
 # Set environment variables.
-ENV DEBIAN_FRONTEND "noninteractive"
-ENV DEBCONF_NONINTERACTIVE_SEEN "true"
+ENV \
+  HADOOP_CONF_DIR=/etc/hadoop \
+  DEBIAN_FRONTEND=noninteractive \
+  DEBCONF_NONINTERACTIVE_SEEN=true \
+  JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 \
+  MESOS_NATIVE_JAVA_LIBRARY=/usr/local/lib/libmesos.so
+
+WORKDIR /opt/spark/dist
 
 # Upgrade package index and install basic commands.
-RUN apt-get update && \
-    apt-get install -y software-properties-common runit nginx
-RUN add-apt-repository ppa:openjdk-r/ppa
-RUN apt-get update && \
-    apt-get install -y openjdk-8-jdk curl
-
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
-ENV MESOS_NATIVE_JAVA_LIBRARY /usr/local/lib/libmesos.so
-ENV HADOOP_CONF_DIR /etc/hadoop
-
-RUN mkdir /etc/hadoop
+RUN \
+  apt-get update \
+    || exit 1; \
+  apt-get install -y software-properties-common \
+    || exit 1; \
+  add-apt-repository ppa:openjdk-r/ppa \
+    || exit 1; \
+  apt-get update \
+    || exit 1; \
+  apt-get install -y runit nginx openjdk-8-jdk curl \
+    || exit 1; \
+  apt-get clean -y \
+    || exit 1; \
+  mkdir /etc/hadoop \
+    || exit 1; \
+  true
 
 ADD dist /opt/spark/dist
 ADD hadoop/* /etc/hadoop/
@@ -49,11 +61,15 @@ ADD nginx /etc/nginx
 # The following symlinks are hacks to make spark-class work under the
 # restricted PATH (/usr/bin) set by the DCOS
 # --executor-environment-variables option
-RUN ln -s /bin/bash /usr/bin/bash
-RUN ln -s /bin/ls /usr/bin/ls
-RUN ln -s /bin/grep /usr/bin/grep
-
-RUN ln -s /var/lib/runit/service/spark /etc/service/spark
-RUN ln -s /var/lib/runit/service/nginx /etc/service/nginx
-
-WORKDIR /opt/spark/dist
+RUN \
+  ln -s /bin/bash /usr/bin/bash \
+    || exit 1; \
+  ln -s /bin/ls /usr/bin/ls \
+    || exit 1; \
+  ln -s /bin/grep /usr/bin/grep \
+    || exit 1; \
+  ln -s /var/lib/runit/service/spark /etc/service/spark \
+    || exit 1; \
+  ln -s /var/lib/runit/service/nginx /etc/service/nginx \
+    || exit 1; \
+  true

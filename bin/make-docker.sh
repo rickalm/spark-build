@@ -10,8 +10,9 @@ set -x -e -o pipefail
 
 function fetch_spark() {
     mkdir -p build/dist
-    [ -f "build/dist/${DIST_TGZ}" ] || curl -o "build/dist/${DIST_TGZ}" "${SPARK_DIST_URI}"
-    tar xvf "build/dist/${DIST_TGZ}" -C build/dist
+    mkdir -p tars
+    [ -f "tars/${DIST_TGZ}" ] || curl -sSLCo "tars/${DIST_TGZ}" "${SPARK_DIST_URI}"
+    tar xvf "tars/${DIST_TGZ}" -C build/dist
 }
 
 function create_docker_context {
@@ -20,6 +21,9 @@ function create_docker_context {
     rm -rf build/docker
     mkdir -p build/docker/dist
     cp -r "build/dist/${DIST}/." build/docker/dist
+    pushd build/docker/dist
+    ln -s . ${DIST}
+    popd
     cp -r conf/* build/docker/dist/conf
     cp -r docker/* build/docker
 }
@@ -34,10 +38,11 @@ function push_docker {
     docker push "${DOCKER_IMAGE}"
 }
 
+DOCKER_IMAGE=${DOCKER_IMAGE:-$(cat manifest.json | jq -r .docker_image)}
 [[ -n "${DOCKER_IMAGE}" ]] || (echo "DOCKER_IMAGE is a required env var." 1>&2; exit 1)
 
 if [ -z "${SPARK_DIST_URI}" ]; then
-    SPARK_URI=$(cat manifest.json | jq .spark_uri)
+    SPARK_URI=$(cat manifest.json | jq -r .spark_uri)
     SPARK_URI="${SPARK_URI%\"}"
     SPARK_URI="${SPARK_URI#\"}"
     SPARK_DIST_URI=${SPARK_URI}

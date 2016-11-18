@@ -19,10 +19,11 @@ def main():
     with open("manifest.json") as f:
         manifest = json.load(f)
 
-    if os.getenv("DOCKER_IMAGE") is None:
-        raise ValueError("DOCKER_IMAGE is a required env var.")
-    else:
-        manifest['docker_image'] = os.getenv("DOCKER_IMAGE")
+    if manifest['docker_image'] is None:
+      if os.getenv("DOCKER_IMAGE") is None:
+          raise ValueError("DOCKER_IMAGE is a required env var.")
+      else:
+          manifest['docker_image'] = os.getenv("DOCKER_IMAGE")
 
     if os.getenv("VERSION") is not None:
         manifest["version"] = os.getenv("VERSION")
